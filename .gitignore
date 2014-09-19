@@ -23,10 +23,3 @@ src/config.h.in
 src/config.h
 src/stamp-h1
 test/test
-# really dont want these...
-AUTHORS
-COPYING
-ChangeLog
-INSTALL
-NEWS
-README
