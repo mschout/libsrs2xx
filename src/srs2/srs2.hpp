@@ -3,4 +3,7 @@
 #ifndef SRS2_SRS2_HPP
 #define SRS2_SRS2_HPP
 
+#include <srs2/shortcut.hpp>
+#include <srs2/guarded.hpp>
+
 #endif
