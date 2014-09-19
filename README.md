@@ -19,7 +19,7 @@ If building from git, you must run `./autogen.sh' first
 ./configure
 make
 make install
-'''
+```
 
 If you wish to run the tests, simply run the `./test/test' binary after `make'
 
