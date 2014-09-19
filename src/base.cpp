@@ -1,3 +1,5 @@
+// Copyright (c) 2014, Michael Schout
+// Distributed under a 3-clause BSD license. See LICENSE.
 #include <sstream>
 #include <boost/algorithm/string.hpp>
 #include <openssl/hmac.h>
