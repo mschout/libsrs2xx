@@ -1,0 +1,21 @@
+AC_PREREQ(2.52)
+AC_INIT([libsrs2xx], 0.01)
+AC_CONFIG_MACRO_DIR([m4])
+AM_INIT_AUTOMAKE
+AC_PROG_LIBTOOL
+AC_PROG_CXX
+AC_PROG_CC
+AC_LANG_PUSH([C++])
+AX_CXX_COMPILE_STDCXX_11([noext],[mandatory])
+
+AX_CHECK_OPENSSL
+BOOST_REQUIRE
+BOOST_STRING_ALGO
+BOOST_TEST
+
+AC_CONFIG_HEADER(src/config.h)
+AC_CONFIG_FILES([Makefile
+                 src/Makefile
+                 test/Makefile])
+
+AC_OUTPUT
