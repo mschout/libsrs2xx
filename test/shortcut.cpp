@@ -1,32 +1,13 @@
 #include <vector>
 #include <string>
 #include <boost/test/unit_test.hpp>
+#include "fixtures/addresses.hpp"
 
 // expose guts for testing
 #define protected public
 #define private   public
 
 #include "srs2/shortcut.hpp"
-
-struct Addresses
-{
-    std::vector<std::string> aliases;
-    std::string source;
-
-    Addresses() : source("user@host.tld")
-    {
-        BOOST_TEST_MESSAGE("build addresses");
-        for (int i = 0; i <= 5; i++) {
-            auto id = std::to_string(i);
-            aliases.push_back(std::string("alias") + id + "@host" + id + ".tld" + id);
-        }
-    }
-
-    ~Addresses()
-    {
-        BOOST_TEST_MESSAGE("teardown addresses");
-    }
-};
 
 BOOST_FIXTURE_TEST_SUITE(Shortcut, Addresses);
 
