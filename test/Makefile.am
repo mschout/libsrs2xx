@@ -6,4 +6,5 @@ noinst_PROGRAMS = test
 test_SOURCES = run.cpp \
 	basic.cpp \
 	guarded.cpp \
-	shortcut.cpp
+	shortcut.cpp \
+	reversible.cpp

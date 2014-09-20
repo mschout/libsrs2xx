@@ -7,5 +7,6 @@ libsrs2xx_la_SOURCES = \
 	base.cpp \
 	shortcut.cpp \
 	guarded.cpp \
+	reversible.cpp \
 	split.cpp \
 	base64.cpp
