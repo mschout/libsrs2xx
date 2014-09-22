@@ -12,14 +12,12 @@ string reversible::compile(const string& sendhost, const string& senduser)
 {
     string timestamp = create_timestamp();
 
-    using namespace std;
-
     string hash = hash_create({ timestamp, sendhost, senduser });
 
-    return (SRS0TAG + m_separator + hash + SRSSEP) +
-        boost::algorithm::join(
-            std::vector<string> { timestamp, sendhost, senduser },
-            SRSSEP);
+    return (SRS0TAG + m_separator) +
+        boost::algorithm::join(std::vector<string> {
+            hash, timestamp, sendhost, senduser
+        }, SRSSEP);
 }
 
 };

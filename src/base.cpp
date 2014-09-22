@@ -8,6 +8,36 @@
 #include "srs2/base.hpp"
 #include "srs2/address.hpp"
 
+using std::string;
+using std::vector;
+
+static bool is_sep(char ch)
+{
+    if (ch == '-' || ch == '+' || ch == '=')
+        return true;
+    else
+        return false;
+}
+
+static bool is_srsx(const string& address, const string& tag)
+{
+    if (address.length() < tag.length() + 1)
+        return false;
+
+    string leader = address.substr(0, tag.length());
+    boost::to_upper(leader);
+
+    if (leader != tag)
+        return false;
+
+    char sep = address[tag.length()];
+
+    if (is_sep(sep))
+        return true;
+    else
+        return false;
+}
+
 namespace srs2 {
 
 /* Don't mess with these unless you know what you're doing well
@@ -21,9 +51,6 @@ const char *timestamp_basechars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
 const int timestamp_size = 2;
 const int timestamp_slots = (1 << (timestamp_basebits << (timestamp_size-1)));
-
-using std::string;
-using std::vector;
 
 void base::add_secret(const string& secret)
 {
@@ -50,7 +77,7 @@ string base::forward(const string& sender, const string& alias)
     if (atpos != string::npos)
         aliashost = alias.substr(atpos+1);
 
-    if (boost::algorithm::equals(aliashost, sendhost, boost::algorithm::is_iequal()))
+    if (boost::iequals(aliashost, sendhost))
         // XXX ref impl has AlwaysRewrite option that determins if we do this or not
         return senduser + "@" + sendhost;
 
@@ -70,6 +97,32 @@ string base::reverse(const string& address)
     auto addr = parse(user);
 
     return addr.user() + "@" + addr.host();
+}
+
+bool base::is_srs(const string& address)
+{
+    if (is_srs0(address) || is_srs1(address))
+        return true;
+    else
+        return false;
+}
+
+bool base::is_srs0(const string& address)
+{
+    return is_srsx(address, SRS0TAG);
+}
+
+bool base::is_srs1(const string& address)
+{
+    return is_srsx(address, SRS1TAG);
+}
+
+void base::remove_tag(string& address)
+{
+    if (is_srs0(address))
+        address = address.substr(SRS0TAG.length()+1);
+    if (is_srs1(address))
+        address = address.substr(SRS1TAG.length()+1);
 }
 
 string base::create_timestamp(time_t now)
@@ -149,7 +202,7 @@ bool base::verify_hash(const std::string& hash,
 
     // if no match was found, try case-insensitve search
     for (const auto& check : valid)
-        if (boost::algorithm::equals(check, hash, boost::algorithm::is_iequal()))
+        if (boost::iequals(check, hash))
             return true;
 
     return false;

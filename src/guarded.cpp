@@ -13,10 +13,11 @@ string guarded::compile(const string& sendhost, const string& senduser)
 {
     string tag = boost::to_upper_copy(senduser.substr(0,SRS1TAG.length()));
 
-    // senduser, starting past tag+separator
-    string user = senduser.substr(SRS1TAG.length());
+    string user = senduser;
 
-    if (tag == SRS1TAG) {
+    if (is_srs1(user)) {
+        remove_tag(user);
+
         // we could do a sanity check here.  It might *not* be an SRS address,
         // unlikely though that is.  However, since we do not need to interpret
         // it, we dont' really care if its not an SRS address or not.
@@ -27,22 +28,25 @@ string guarded::compile(const string& sendhost, const string& senduser)
 
         string hash = hash_create(data.begin() + 1, data.end());
 
-        vector<string> parts {
-            (string(SRS1TAG) + string(1, m_separator)),
-            hash,
-            data[1], // srshost
-            data[2]  // srsuser
-        };
-
-        return boost::algorithm::join(parts, SRSSEP);
+        return (SRS1TAG + m_separator) +
+            boost::algorithm::join(vector<string> {
+                hash,
+                data[1], // srshost
+                data[2]  // srsuser
+            }, SRSSEP);
     }
-    else if (tag == SRS0TAG) {
-        vector<string> data { string(sendhost), user };
-        string hash = hash_create(data);
+    else if (is_srs0(user)) {
+        // strip SRS0, but keep the separator
+        user = user.substr(SRS0TAG.length());
 
-        return SRS1TAG + string(1, m_separator) + hash
-            + SRSSEP + string(sendhost)
-            + SRSSEP + user;
+        string hash = hash_create({ sendhost, user });
+
+        return (SRS1TAG + m_separator) +
+            boost::algorithm::join(vector<string> {
+                hash,
+                sendhost,
+                user
+            }, SRSSEP);
     }
 
     return super::compile(sendhost, senduser);
@@ -52,13 +56,11 @@ address guarded::parse(const string& srsuser)
 {
     string tag = boost::to_upper_copy(srsuser.substr(0,SRS1TAG.length()));
 
-    // XXX need to account for valid tag separator. probably need something in
-    // base to match tags and remove them
+    string user = srsuser;
 
-    // srsuser after tag+separator
-    string user = srsuser.substr(SRS1TAG.length()+1);
+    if (is_srs1(user)) {
+        remove_tag(user);
 
-    if (tag == SRS1TAG) {
         // hash, host, user, ...
         vector<string> parts = split(user, SRSSEP.front(), 3);
 
@@ -69,7 +71,7 @@ address guarded::parse(const string& srsuser)
         string host = parts[1];
         string user = parts[2];
 
-        if (!verify_hash(hash, vector<string>(parts.begin() + 1, parts.end())))
+        if (!verify_hash(hash, parts.begin() + 1, parts.end()))
             throw std::runtime_error("Invalid hash");
 
         if (host.empty() || parts.empty())
