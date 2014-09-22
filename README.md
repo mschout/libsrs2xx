@@ -23,6 +23,26 @@ make install
 
 If you wish to run the tests, simply run the `./test/test' binary after `make'
 
+## Usage
+
+For the Guarded scheme (the default for Mail::SRS reference implementation):
+
+```
+#include <srs2/srs2.hpp>
+....
+srs2::guarded srs("my secret");
+
+std::string srsaddress = srs.forward("user@nowhere.com", "bounces.forwarder.com");
+
+std::string orig = srs.reverse(srsaddress);
+```
+
+The other schemes available can be used by simply using a different class other
+than srs2::guarded.  The available schemes are:
+
+  - Shortcut: implemented in `srs2::shortcut'
+  - Reversible: implemented in `srs2::reversible'
+
 ## Copying
 
 This software is licensed under the BSD 3-Clause license.  For details see the
