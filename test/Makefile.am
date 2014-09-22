@@ -5,6 +5,10 @@ noinst_PROGRAMS = test
 
 test_SOURCES = run.cpp \
 	basic.cpp \
+	base.cpp \
 	guarded.cpp \
 	shortcut.cpp \
-	reversible.cpp
+	reversible.cpp \
+	separator.cpp \
+	varysep.cpp \
+	caseless.cpp
