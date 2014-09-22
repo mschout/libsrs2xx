@@ -10,3 +10,14 @@ libsrs2xx_la_SOURCES = \
 	reversible.cpp \
 	split.cpp \
 	base64.cpp
+
+# install these headers
+srs2headersdir = $(includedir)/srs2
+
+srs2headers_HEADERS = \
+	srs2/base.hpp \
+	srs2/address.hpp \
+	srs2/guarded.hpp \
+	srs2/reversible.hpp \
+	srs2/shortcut.hpp \
+	srs2/srs2.hpp
