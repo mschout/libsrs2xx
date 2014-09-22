@@ -5,5 +5,6 @@
 
 #include <srs2/shortcut.hpp>
 #include <srs2/guarded.hpp>
+#include <srs2/reversible.hpp>
 
 #endif
