@@ -16,7 +16,7 @@ const std::string SRSSEP  = "=";
 
 class base {
     public:
-        base() = delete;
+        base() { };
 
         /**
          * Constructor.
@@ -123,7 +123,7 @@ class base {
 
 
         std::vector<std::string> m_secrets;
-        char m_separator;
+        char m_separator = '=';
         int m_maxage = 21;
         int m_hashlength = 4;
         int m_hashmin = 4;
