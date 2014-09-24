@@ -11,6 +11,8 @@ libsrs2xx_la_SOURCES = \
 	split.cpp \
 	base64.cpp
 
+EXTRA_DIST = base64.hpp srs2
+
 # install these headers
 srs2headersdir = $(includedir)/srs2
 

@@ -25,3 +25,4 @@ src/config.h.in
 src/config.h
 src/stamp-h1
 test/test
+libsrs2xx-*
