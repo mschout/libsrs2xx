@@ -128,11 +128,13 @@ void base::remove_tag(string& address)
 string base::create_timestamp(time_t now)
 {
     now = now / timestamp_precision;
-    std::vector<char> buf(2);
+    std::vector<char> buf(3);
 
     buf[1] = timestamp_basechars[now & ((1 << timestamp_basebits) - 1)];
     now = now >> timestamp_basebits;
     buf[0] = timestamp_basechars[now & ((1 << timestamp_basebits) - 1)];
+
+    buf[2] = 0;
 
     return buf.data();
 }
